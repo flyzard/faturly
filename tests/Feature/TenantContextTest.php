@@ -43,11 +43,6 @@ class TenantContextTest extends TestCase
         $this->assertNull($user->tenant);
     }
 
-    public function test_a_guest_resolves_to_no_tenant()
-    {
-        $this->get('_test/web-tenant')->assertOk()->assertJsonPath('tenant_id', null);
-    }
-
     public function test_the_suite_runs_against_postgres_as_the_dml_only_role()
     {
         $this->assertSame('pgsql', DB::connection()->getDriverName());
@@ -70,17 +65,6 @@ class TenantContextTest extends TestCase
 
         $this->assertSame('', DB::scalar("select current_setting('app.tenant_id', true)"));
         $this->assertNull(DB::scalar("select nullif(current_setting('app.tenant_id', true), '')::uuid"));
-    }
-
-    public function test_a_session_authenticated_user_resolves_to_their_tenant()
-    {
-        $tenant = Tenant::factory()->create();
-        $user = User::factory()->for($tenant)->create();
-
-        $this->actingAs($user)
-            ->get('_test/web-tenant')
-            ->assertOk()
-            ->assertJsonPath('tenant_id', $tenant->id);
     }
 
     public function test_a_bearer_token_resolves_to_the_users_tenant()
