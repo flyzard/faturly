@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
+use Tests\Concerns\RefreshDatabaseAsOwner;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabaseAsOwner;
 
     protected function setUp(): void
     {

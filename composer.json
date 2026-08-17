@@ -10,10 +10,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "dedoc/scramble": "^0.13.41",
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/chisel": "^0.1.0",
         "laravel/fortify": "^1.37.2",
         "laravel/framework": "^13.17",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14"
     },
@@ -25,6 +27,7 @@
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
         "laravel/sail": "^1.53",
+        "laravel/telescope": "^5.22",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.9.3",
         "phpunit/phpunit": "^12.5.23"
@@ -46,13 +49,16 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
-            "npm install",
-            "npm run build"
+            "@php artisan migrate --database=pgsql_migrator --force",
+            "bun install",
+            "bun run build"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "@php artisan dev"
+        ],
+        "migrate": [
+            "@php artisan migrate --database=pgsql_migrator"
         ],
         "lint": [
             "pint --parallel"
@@ -62,9 +68,9 @@
         ],
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
-            "npm run lint:check",
-            "npm run format:check",
-            "npm run types:check",
+            "bun run lint:check",
+            "bun run format:check",
+            "bun run types:check",
             "@test"
         ],
         "types:check": [
